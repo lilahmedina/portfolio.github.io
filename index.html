@@ -1,215 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Developer Portfolio</title>
-    <style>
-        body { margin: 0; }
-        canvas { display: block; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Delilah Medina's Portfolio </title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Basic Security -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; 
+                 script-src 'self' https://unpkg.com; 
+                 style-src 'self';">
 </head>
 <body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
-    <script type="text/javascript">
-        // Scene setup
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xF5F5DC); // Beige background for homey feel
+  <div id="info">
+    🌿 Delilah Medina – Web Developer
+  </div>
 
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(0, 2, 5);
-
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.shadowMap.enabled = true;
-        document.body.appendChild(renderer.domElement);
-
-        const controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.25;
-
-        // Lights for warm, homey atmosphere
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-        scene.add(ambientLight);
-
-        const pointLight = new THREE.PointLight(0xffd700, 1, 50); // Warm yellow light
-        pointLight.position.set(0, 5, 0);
-        pointLight.castShadow = true;
-        scene.add(pointLight);
-
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-        directionalLight.position.set(5, 5, 5);
-        directionalLight.castShadow = true;
-        scene.add(directionalLight);
-
-        // Floor - wooden floor
-        const floorGeometry = new THREE.PlaneGeometry(10, 10);
-        const floorMaterial = new THREE.MeshLambertMaterial({ color: 0x8B4513 }); // Brown wood
-        const floor = new THREE.Mesh(floorGeometry, floorMaterial);
-        floor.rotation.x = -Math.PI / 2;
-        floor.receiveShadow = true;
-        scene.add(floor);
-
-        // Walls - cozy beige walls
-        const wallGeometry = new THREE.BoxGeometry(10, 5, 0.1);
-        const wallMaterial = new THREE.MeshLambertMaterial({ color: 0xF5F5DC });
-        
-        const backWall = new THREE.Mesh(wallGeometry, wallMaterial);
-        backWall.position.set(0, 2.5, -5);
-        backWall.receiveShadow = true;
-        scene.add(backWall);
-
-        const leftWall = new THREE.Mesh(wallGeometry, wallMaterial);
-        leftWall.rotation.y = Math.PI / 2;
-        leftWall.position.set(-5, 2.5, 0);
-        leftWall.receiveShadow = true;
-        scene.add(leftWall);
-
-        const rightWall = new THREE.Mesh(wallGeometry, wallMaterial);
-        rightWall.rotation.y = -Math.PI / 2;
-        rightWall.position.set(5, 2.5, 0);
-        rightWall.receiveShadow = true;
-        scene.add(rightWall);
-
-        // Shelves - wooden shelves
-        const shelfGeometry = new THREE.BoxGeometry(4, 0.1, 1);
-        const shelfMaterial = new THREE.MeshLambertMaterial({ color: 0x8B4513 });
-
-        const shelf1 = new THREE.Mesh(shelfGeometry, shelfMaterial);
-        shelf1.position.set(-2, 1, -4.5);
-        shelf1.castShadow = true;
-        shelf1.receiveShadow = true;
-        scene.add(shelf1);
-
-        const shelf2 = new THREE.Mesh(shelfGeometry, shelfMaterial);
-        shelf2.position.set(0, 1, -4.5);
-        shelf2.castShadow = true;
-        shelf2.receiveShadow = true;
-        scene.add(shelf2);
-
-        const shelf3 = new THREE.Mesh(shelfGeometry, shelfMaterial);
-        shelf3.position.set(2, 1, -4.5);
-        shelf3.castShadow = true;
-        shelf3.receiveShadow = true;
-        scene.add(shelf3);
-
-        // Function to create a simple procedural plant with pot
-        function createPlant(x, y, z, skill) {
-            const group = new THREE.Group();
-            group.position.set(x, y, z);
-            group.userData = { skill: skill };
-
-            // Pot - simple cylinder
-            const potGeometry = new THREE.CylinderGeometry(0.3, 0.2, 0.4, 16);
-            const potMaterial = new THREE.MeshLambertMaterial({ color: 0xE2725B }); // Terracotta color (0xE2725B)
-            const pot = new THREE.Mesh(potGeometry, potMaterial);
-            pot.position.y = 0.2;
-            pot.castShadow = true;
-            pot.receiveShadow = true;
-            group.add(pot);
-
-            // Stem
-            const stemGeometry = new THREE.CylinderGeometry(0.05, 0.05, 1, 8);
-            const stemMaterial = new THREE.MeshLambertMaterial({ color: 0x228B22 }); // Forest green
-            const stem = new THREE.Mesh(stemGeometry, stemMaterial);
-            stem.position.y = 0.7;
-            stem.castShadow = true;
-            group.add(stem);
-
-            // Leaves - multiple spheres for bushy look
-            const leafGeometry = new THREE.SphereGeometry(0.2, 8, 8);
-            const leafMaterial = new THREE.MeshLambertMaterial({ color: 0x32CD32 }); // Lime green
-
-            const leaf1 = new THREE.Mesh(leafGeometry, leafMaterial);
-            leaf1.position.set(0, 1.2, 0);
-            leaf1.castShadow = true;
-            group.add(leaf1);
-
-            const leaf2 = new THREE.Mesh(leafGeometry, leafMaterial);
-            leaf2.position.set(0.1, 1.0, 0.1);
-            leaf2.scale.set(0.8, 0.8, 0.8);
-            leaf2.castShadow = true;
-            group.add(leaf2);
-
-            const leaf3 = new THREE.Mesh(leafGeometry, leafMaterial);
-            leaf3.position.set(-0.1, 1.0, -0.1);
-            leaf3.scale.set(0.8, 0.8, 0.8);
-            leaf3.castShadow = true;
-            group.add(leaf3);
-
-            return group;
-        }
-
-        // Add plants representing skills
-        const plant1 = createPlant(-2, 1.05, -4.5, 'Computer Science: Expertise in algorithms, data structures, AI, and computational theory.');
-        scene.add(plant1);
-
-        const plant2 = createPlant(0, 1.05, -4.5, 'Programming: Proficient in JavaScript, Python, Java, and building interactive web applications.');
-        scene.add(plant2);
-
-        const plant3 = createPlant(2, 1.05, -4.5, 'Computer Enthusiast: Passionate about hardware, building PCs, gaming, and exploring emerging tech like VR/AR.');
-        scene.add(plant3);
-
-        // Load font for labels
-        const fontLoader = new THREE.FontLoader();
-        fontLoader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function (font) {
-            function createLabel(text, x, y, z) {
-                const textGeometry = new THREE.TextGeometry(text, {
-                    font: font,
-                    size: 0.2,
-                    height: 0.05,
-                });
-                const textMaterial = new THREE.MeshLambertMaterial({ color: 0x000000 });
-                const label = new THREE.Mesh(textGeometry, textMaterial);
-                label.position.set(x, y, z);
-                label.rotation.y = Math.PI; // Face front
-                scene.add(label);
-            }
-
-            createLabel('Computer Science', -3, 1.5, -4.5);
-            createLabel('Programming', -0.5, 1.5, -4.5);
-            createLabel('Enthusiast', 1.5, 1.5, -4.5);
-        });
-
-        // Interactivity
-        const raycaster = new THREE.Raycaster();
-        const mouse = new THREE.Vector2();
-
-        function onClick(event) {
-            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-            raycaster.setFromCamera(mouse, camera);
-
-            const intersects = raycaster.intersectObjects(scene.children, true);
-
-            if (intersects.length > 0) {
-                let target = intersects[0].object;
-                while (target && !target.userData.skill) {
-                    target = target.parent;
-                }
-                if (target && target.userData.skill) {
-                    alert(target.userData.skill);
-                }
-            }
-        }
-
-        window.addEventListener('click', onClick);
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
-
-        // Animation loop
-        function animate() {
-            requestAnimationFrame(animate);
-            controls.update();
-            renderer.render(scene, camera);
-        }
-
-        animate();
-    </script>
+  <script type="module" src="main.js"></script>
 </body>
 </html>
